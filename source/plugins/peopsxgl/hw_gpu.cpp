@@ -463,7 +463,7 @@ void _updateDisplay(void) // UPDATE DISPLAY
 				glEnable(GL_SCISSOR_TEST);
 		 */
 		gpuRenderer.DisableScissor();
-		gpuRenderer.ClearColor(0, 0, 0, 128);
+		gpuRenderer.ClearColor(0, 0, 0, 255);
 		gpuRenderer.Clear(uiBufferBits);
 		gpuRenderer.EnableScissor();
 
@@ -538,7 +538,7 @@ void _updateDisplay(void) // UPDATE DISPLAY
 
 		XeColor xeclearcolor;
 		xeclearcolor.color = 0;
-		xeclearcolor.a = 128;
+		xeclearcolor.a = 255;
 		xeclearcolor.r = RED(lClearOnSwapColor);
 		xeclearcolor.g = BLUE(lClearOnSwapColor);
 		xeclearcolor.b = GREEN(lClearOnSwapColor);
@@ -735,7 +735,7 @@ void SetAspectRatio(void) {
 		//glClearColor(0, 0, 0, 128);
 		XeColor xeclearcolor;
 		xeclearcolor.color = 0;
-		xeclearcolor.a = 128;
+		xeclearcolor.a = 255;
 		//Xe_SetClearColor(xe,xeclearcolor.color);
 		gpuRenderer.ClearColor(xeclearcolor.r, xeclearcolor.g, xeclearcolor.b, xeclearcolor.a);
 

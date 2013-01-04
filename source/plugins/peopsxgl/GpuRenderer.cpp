@@ -499,9 +499,9 @@ void GpuRenderer::ClearColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 	} ucolor;
 
 	ucolor.c[0] = a;
-	ucolor.c[1] = b;
+	ucolor.c[1] = r;
 	ucolor.c[2] = g;
-	ucolor.c[3] = r;
+	ucolor.c[3] = b;
 
 	Xe_SetClearColor(xe,ucolor.u);
 }
@@ -747,7 +747,8 @@ void GpuRenderer::Render() {
 
 	rendering = true;
 
-	Xe_ResolveInto(xe, Xe_GetFramebufferSurface(xe), XE_SOURCE_COLOR, XE_CLEAR_DS);
+	// Xe_ResolveInto(xe, Xe_GetFramebufferSurface(xe), XE_SOURCE_COLOR, XE_CLEAR_DS);
+	Xe_Resolve(xe);
 	
 #if 1
 	Xe_Execute(xe); // start background render !
