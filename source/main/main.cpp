@@ -49,6 +49,10 @@ extern PluginTable plugins[];
 #define cdfile "sda0:/psxisos/cb3.bin"
 #define cdfile "sda0:/psxisos/souledge.img"
 
+#define cdfile "sda0:/devkit/pcsxr/Castlevanina - SOTN.bin"
+//#define cdfile "sda0:/devkit/pcsxr/Tekken 3 (USA)/Tekken 3 (USA) (Track 1).bin"
+//#define cdfile "sda0:/devkit/pcsxr/Gran Turismo 2 (USA) (Arcade Mode) (v1.1)/Gran Turismo 2 (USA) (Arcade Mode) (v1.1).bin"
+
 void printConfigInfo() {
 
 }
@@ -60,6 +64,9 @@ static void findDevices() {
 		}
 	}
 }
+
+extern "C" void network_poll();
+extern "C" void network_init();
 
 void buffer_dump(uint8_t * buf, int size) {
 	int i = 0;
@@ -119,7 +126,7 @@ int main() {
 	xenon_ata_init();
 	xenon_atapi_init();
 
-	fatInitDefault();
+	// fatInitDefault();
 	
 	//char mount[10];
 	//sprintf(mount, "uda0");
@@ -144,7 +151,7 @@ int main() {
 	 */
 	memset(&Config, 0, sizeof (PcsxConfig));
 
-	//    network_init();
+	network_init();
 	//    network_print_config();
 
 	//console_close();
@@ -154,7 +161,7 @@ int main() {
 	// telnet_console_init();
 	// mdelay(5000);
 
-	//httpd_start();
+	httpd_start();
 
 	// uart speed patch 115200 - jtag/freeboot
 	// *(volatile uint32_t*)(0xea001000+0x1c) = 0xe6010000;
@@ -170,7 +177,7 @@ int main() {
 	strcpy(Config.Bios, "SCPH1001.BIN"); // Use actual BIOS
 	//strcpy(Config.Bios, "scph7502.bin"); // Use actual BIOS
 	//strcpy(Config.Bios, "HLE"); // Use HLE
-	strcpy(Config.BiosDir, "sda0:/pcsxr/bios");
+	strcpy(Config.BiosDir, "sda0:/devkit/pcsxr/bios");
 	strcpy(Config.PatchesDir, "sda0:/pcsxr/patches_/");
 
 	Config.PsxAuto = 1; // autodetect system
@@ -178,8 +185,8 @@ int main() {
 	Config.Cpu = CPU_DYNAREC;
 	//Config.Cpu =  CPU_INTERPRETER;
 
-	strcpy(Config.Mcd1, "sda0:/pcsxr/memcards/card1.mcd");
-	strcpy(Config.Mcd2, "sda0:/pcsxr/memcards/card2.mcd");
+	strcpy(Config.Mcd1, "sda0:/devkit/pcsxr/memcards/card1.mcd");
+	strcpy(Config.Mcd2, "sda0:/devkit/pcsxr/memcards/card2.mcd");
 
 	// useSoftGpu();
 	/*
@@ -223,8 +230,9 @@ void cpuReset() {
 SPU_Config SpuConfig;
 HW_GPU_Config HwGpuConfig;
 
+
 extern "C" void systemPoll() {
-	// network_poll();
+	network_poll();
 }
 
 #endif
