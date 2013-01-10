@@ -75,7 +75,6 @@ private:
 	GpuPS * g_pPixelShaderG;
 
 	bool rendering;
-	bool clearing;
 	
 	/**
 	 * Post process
@@ -132,6 +131,9 @@ private:
 		uint32_t scissor_top;
 		uint32_t scissor_right;
 		uint32_t scissor_bottom;
+		
+		// clear 
+		uint32_t clear_flags;
 	};
 
 	RenderStates m_RenderStates;
@@ -216,7 +218,6 @@ public:
 	 * Render
 	 */
 	void FinishPendingRender();
-	void FinishPendingClear();
 	void Render();
 
 	/**

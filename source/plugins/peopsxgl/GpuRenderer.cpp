@@ -485,11 +485,7 @@ void GpuRenderer::DisableTexture() {
 void GpuRenderer::Clear(uint32_t flags) {
 	SubmitVertices();
 
-	FinishPendingClear();
-	
-	Xe_Clear(xe,flags);
-	Xe_Execute(xe);
-	clearing = true;
+	m_RenderStates.clear_flags = flags;
 }
 
 void GpuRenderer::ClearColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
@@ -729,15 +725,13 @@ void GpuRenderer::Render() {
     SubmitVertices();
 
 	Unlock();
-
-	FinishPendingClear();
 	
 	// Resolve in temporary surface
 	RenderPostProcess();
 
 	rendering = true;
 
-	Xe_ResolveInto(xe, Xe_GetFramebufferSurface(xe), XE_SOURCE_COLOR, XE_CLEAR_DS);
+	Xe_ResolveInto(xe, Xe_GetFramebufferSurface(xe), XE_SOURCE_COLOR, m_RenderStates.clear_flags);
 	
 #if 1
 	Xe_Execute(xe); // start background render !
@@ -778,15 +772,6 @@ void GpuRenderer::FinishPendingRender() {
 
 	nb_indices = 0;
 	nb_vertices = 0;
-}
-
-void GpuRenderer::FinishPendingClear() {
-	if (clearing)
-	{
-		Xe_Execute(xe); // wait for background clear to finish !
-		Xe_VBReclaim(xe);
-		clearing = false;
-	}
 }
 
 /**
